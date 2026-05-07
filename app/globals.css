@@ -1,16 +1,17 @@
 @import "tailwindcss";
 
 @theme {
-  --color-bg: #06101F;
-  --color-ink: #F5F8FF;
-  --color-ink-soft: rgba(245, 248, 255, 0.72);
-  --color-ink-dim: rgba(245, 248, 255, 0.45);
-  --color-line: rgba(255, 255, 255, 0.12);
-  --color-glass: rgba(255, 255, 255, 0.06);
-  --color-accent: #6CB6FF;
-  --color-accent-deep: #2E90EA;
+  --color-bg: #F4F8FF;
+  --color-bg-tint: #DCE9FB;
+  --color-ink: #0B1C36;
+  --color-ink-soft: rgba(11, 28, 54, 0.68);
+  --color-ink-dim: rgba(11, 28, 54, 0.45);
+  --color-line: rgba(11, 28, 54, 0.10);
+  --color-glass: rgba(255, 255, 255, 0.6);
+  --color-accent: #2E90EA;
+  --color-accent-deep: #1B6FC4;
   --color-success: #5BE6A6;
-  --color-danger: #FF7A7A;
+  --color-danger: #C13B3B;
 
   --font-display: var(--font-display), ui-sans-serif, system-ui, sans-serif;
   --font-sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
@@ -62,6 +63,105 @@ body {
   to { opacity: 1; transform: translateY(0); }
 }
 .rise-in { animation: riseIn 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+
+/* Interactive cursor glow — driven by --mx / --my CSS vars set on <html> */
+.cursor-glow {
+  background: radial-gradient(
+    700px circle at var(--mx, 50%) var(--my, 30%),
+    rgba(46, 144, 234, 0.42),
+    rgba(108, 182, 255, 0.22) 30%,
+    transparent 65%
+  );
+}
+
+/* Soft milky mesh ambient layer */
+.milky-mesh {
+  background:
+    radial-gradient(ellipse 60% 50% at 12% 10%, var(--color-bg-tint), transparent 60%),
+    radial-gradient(ellipse 55% 45% at 88% 95%, var(--color-bg-tint), transparent 60%);
+}
+
+/* Silky woven texture — multi-layer sheen + cross-fibered noise + iridescence */
+.silk-sheen {
+  background-image:
+    /* primary diagonal sheen band */
+    linear-gradient(118deg,
+      rgba(255,255,255,0.0) 0%,
+      rgba(255,255,255,0.55) 18%,
+      rgba(220,233,251,0.0) 38%,
+      rgba(255,255,255,0.45) 62%,
+      rgba(220,233,251,0.0) 82%,
+      rgba(255,255,255,0.35) 100%),
+    /* counter-angle sheen band */
+    linear-gradient(62deg,
+      rgba(160,200,255,0.0) 0%,
+      rgba(160,200,255,0.22) 30%,
+      rgba(255,255,255,0.0) 55%,
+      rgba(160,200,255,0.18) 80%,
+      rgba(160,200,255,0.0) 100%);
+  mix-blend-mode: soft-light;
+  opacity: 0.95;
+}
+.silk-fibers {
+  background-image:
+    /* warp threads */
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='320' height='320'><filter id='w'><feTurbulence type='fractalNoise' baseFrequency='3.2 0.04' numOctaves='2' stitchTiles='stitch' seed='3'/><feColorMatrix values='0 0 0 0 0.42  0 0 0 0 0.56  0 0 0 0 0.92  0 0 0 0.32 0'/></filter><rect width='100%25' height='100%25' filter='url(%23w)'/></svg>"),
+    /* weft threads */
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='320' height='320'><filter id='f'><feTurbulence type='fractalNoise' baseFrequency='0.04 3.2' numOctaves='2' stitchTiles='stitch' seed='9'/><feColorMatrix values='0 0 0 0 0.42  0 0 0 0 0.56  0 0 0 0 0.92  0 0 0 0.28 0'/></filter><rect width='100%25' height='100%25' filter='url(%23f)'/></svg>"),
+    /* fine grain to break up banding */
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='1.4' numOctaves='2' stitchTiles='stitch' seed='1'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.18 0'/></filter><rect width='100%25' height='100%25' filter='url(%23g)'/></svg>");
+  background-size: 320px 320px, 320px 320px, 180px 180px;
+  mix-blend-mode: soft-light;
+  opacity: 0.9;
+}
+.silk-iridescence {
+  background-image: conic-gradient(from 210deg at 50% 40%,
+    rgba(255,255,255,0.0)   0deg,
+    rgba(180,210,255,0.18) 60deg,
+    rgba(255,255,255,0.0) 120deg,
+    rgba(210,225,255,0.16) 200deg,
+    rgba(255,255,255,0.0) 280deg,
+    rgba(190,215,255,0.18) 340deg,
+    rgba(255,255,255,0.0) 360deg);
+  mix-blend-mode: overlay;
+  opacity: 0.7;
+}
+
+/* Ripple wavefront — a thin RING that travels outward, dissipates at the edge */
+.ripple {
+  position: absolute;
+  width: var(--rsize, 600px);
+  height: var(--rsize, 600px);
+  margin-left: calc(var(--rsize, 600px) / -2);
+  margin-top: calc(var(--rsize, 600px) / -2);
+  border-radius: 9999px;
+  pointer-events: none;
+  /* Hollow ring: bright wavefront band sits between 44%–56% of radius. As the
+     element scales 0→1, this band sweeps outward exactly to the edges. */
+  background: radial-gradient(circle,
+    transparent 0%,
+    transparent 38%,
+    rgba(255,255,255,0.55) 46%,
+    rgba(160,205,255,0.75) 50%,
+    rgba(108,182,255,0.45) 54%,
+    transparent 62%);
+  mix-blend-mode: screen;
+  transform: scale(0);
+  opacity: 0;
+  animation: rippleOut 1600ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  will-change: transform, opacity;
+}
+@keyframes rippleOut {
+  0%   { transform: scale(0);    opacity: 0; }
+  8%   {                          opacity: 0.95; }
+  85%  {                          opacity: 0.55; }
+  100% { transform: scale(1.02); opacity: 0; }
+}
+
+/* Disable cursor glow on touch devices */
+@media (hover: none) {
+  .cursor-glow { display: none; }
+}
 
 /* Italicized accent on display fonts pairs with serif */
 .accent-italic {
