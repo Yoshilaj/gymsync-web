@@ -11,24 +11,39 @@ export function CursorGlow() {
   const glowRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    if (window.matchMedia('(hover: none)').matches) return;
     const host = hostRef.current;
     const glow = glowRef.current;
     if (!host || !glow) return;
+
+    const isTouch = window.matchMedia('(hover: none)').matches;
 
     let raf = 0;
     let lastX = -9999;
     let lastY = -9999;
     let nextX = window.innerWidth / 2;
     let nextY = window.innerHeight / 3;
+    let ambientRaf = 0;
 
-    glow.style.opacity = '0';
+    glow.style.opacity = isTouch ? '0.7' : '0';
+
+    // On touch, drift the glow in a slow circle so the background still feels alive.
+    if (isTouch) {
+      const start = performance.now();
+      const drift = (now: number) => {
+        const t = (now - start) / 1000;
+        const cx = window.innerWidth / 2 + Math.cos(t * 0.35) * window.innerWidth * 0.28;
+        const cy = window.innerHeight / 2 + Math.sin(t * 0.45) * window.innerHeight * 0.22;
+        glow.style.transform = `translate3d(${cx - GLOW_SIZE / 2}px, ${cy - GLOW_SIZE / 2}px, 0)`;
+        ambientRaf = requestAnimationFrame(drift);
+      };
+      ambientRaf = requestAnimationFrame(drift);
+    }
 
     const onMove = (e: PointerEvent) => {
       nextX = e.clientX;
       nextY = e.clientY;
 
-      if (!raf) {
+      if (!isTouch && !raf) {
         raf = requestAnimationFrame(() => {
           glow.style.transform = `translate3d(${nextX - GLOW_SIZE / 2}px, ${
             nextY - GLOW_SIZE / 2
@@ -47,6 +62,10 @@ export function CursorGlow() {
       }
     };
 
+    const onTap = (e: PointerEvent) => {
+      spawnRipple(host, e.clientX, e.clientY);
+    };
+
     const spawnRipple = (h: HTMLDivElement, x: number, y: number) => {
       const w = window.innerWidth;
       const ht = window.innerHeight;
@@ -63,9 +82,12 @@ export function CursorGlow() {
     };
 
     window.addEventListener('pointermove', onMove, { passive: true });
+    window.addEventListener('pointerdown', onTap, { passive: true });
     return () => {
       window.removeEventListener('pointermove', onMove);
+      window.removeEventListener('pointerdown', onTap);
       if (raf) cancelAnimationFrame(raf);
+      if (ambientRaf) cancelAnimationFrame(ambientRaf);
     };
   }, []);
 
