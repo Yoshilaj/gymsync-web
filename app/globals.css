@@ -158,10 +158,6 @@ body {
   100% { transform: scale(1.02); opacity: 0; }
 }
 
-/* Disable cursor glow on touch devices */
-@media (hover: none) {
-  .cursor-glow { display: none; }
-}
 
 /* Italicized accent on display fonts pairs with serif */
 .accent-italic {

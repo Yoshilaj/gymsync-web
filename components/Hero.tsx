@@ -44,7 +44,7 @@ export function Hero({ signups, cap }: Props) {
           </div>
 
           {/* RIGHT — Copy + form */}
-          <div className="flex flex-col">
+          <div className="flex flex-col items-center text-center lg:items-start lg:text-left">
             <h1 className="font-display text-[34px] font-semibold leading-[1.05] tracking-[-0.02em] text-[color:var(--color-ink)] sm:text-[44px] lg:text-[56px]">
               Train smarter with your{' '}
               <span className="accent-italic font-normal text-[color:var(--color-accent-deep)]">
@@ -63,7 +63,7 @@ export function Hero({ signups, cap }: Props) {
               <WaitlistForm />
             </div>
 
-            <div className="mt-5 flex flex-wrap items-center gap-x-3 gap-y-2 text-[12.5px] text-[color:var(--color-ink-soft)]">
+            <div className="mt-5 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 text-[12.5px] text-[color:var(--color-ink-soft)] lg:justify-start">
               <span className="inline-flex items-center gap-1.5">
                 <span className="text-[#E0A100]">★</span>
                 <span>

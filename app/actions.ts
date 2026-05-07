@@ -25,6 +25,12 @@ export async function joinWaitlist(
 
   // 23505 = unique_violation. Treat re-signups as success.
   if (error && error.code !== '23505') {
+    console.error('[joinWaitlist] supabase insert failed', {
+      code: error.code,
+      message: error.message,
+      details: error.details,
+      hint: error.hint,
+    });
     return { ok: false, error: 'Something went wrong. Please try again.' };
   }
 
