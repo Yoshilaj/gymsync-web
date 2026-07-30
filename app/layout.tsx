@@ -23,7 +23,7 @@ const serif = Instrument_Serif({
   display: 'swap',
 });
 
-const SITE_URL = 'https://gymsync.app';
+const SITE_URL = 'https://gymsyncapp.me';
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),

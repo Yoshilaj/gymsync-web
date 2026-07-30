@@ -1,6 +1,7 @@
 import { WaitlistForm } from './WaitlistForm';
 import { BrandMark } from './BrandMark';
 import { CursorGlow } from './CursorGlow';
+import { Footer } from './Footer';
 
 type Props = { signups: number; cap: number };
 
@@ -81,10 +82,7 @@ export function Hero({ signups, cap }: Props) {
         </div>
       </section>
 
-      {/* ── Footer micro ─────────────────────────── */}
-      <footer className="relative z-10 mx-auto w-full max-w-6xl px-6 py-5 text-[11px] text-[color:var(--color-ink-dim)] sm:px-8 sm:py-6">
-        © {new Date().getFullYear()} GymSync · hello@gymsync.app
-      </footer>
+      <Footer />
     </main>
   );
 }
