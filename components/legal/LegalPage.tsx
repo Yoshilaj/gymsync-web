@@ -5,6 +5,13 @@ import { Footer } from '@/components/Footer';
 type Props = {
   title: string;
   effectiveDate: string;
+  /**
+   * Separate from effectiveDate on purpose. A correction to how we describe an
+   * existing practice moves this; only a change to the practice itself moves
+   * the effective date, which is the one that carries a notification duty.
+   * Defaults to effectiveDate so an unrevised page still reads correctly.
+   */
+  lastUpdated?: string;
   children: React.ReactNode;
 };
 
@@ -13,7 +20,7 @@ type Props = {
  * descendant selectors rather than per-tag components, so the page files
  * below can stay close to the source Markdown — plain h2/h3/p/ul/table.
  */
-export function LegalPage({ title, effectiveDate, children }: Props) {
+export function LegalPage({ title, effectiveDate, lastUpdated, children }: Props) {
   return (
     <main className="relative min-h-screen w-full bg-[var(--color-bg)] text-[color:var(--color-ink)]">
       <header className="mx-auto flex w-full max-w-3xl items-center justify-between px-6 py-6 sm:px-8">
@@ -36,7 +43,7 @@ export function LegalPage({ title, effectiveDate, children }: Props) {
           {title}
         </h1>
         <p className="mt-2 text-[13px] text-[color:var(--color-ink-dim)]">
-          Effective {effectiveDate} · Last updated {effectiveDate}
+          Effective {effectiveDate} · Last updated {lastUpdated ?? effectiveDate}
         </p>
 
         <div

@@ -7,11 +7,12 @@ export const metadata: Metadata = {
   description: 'How GymSync collects, uses, and protects your information.',
 };
 
-const EFFECTIVE_DATE = 'July 30, 2026';
+const EFFECTIVE_DATE = 'August 1, 2026';
+const LAST_UPDATED = 'August 1, 2026';
 
 export default function PrivacyPolicyPage() {
   return (
-    <LegalPage title="Privacy Policy for GymSync" effectiveDate={EFFECTIVE_DATE}>
+    <LegalPage title="Privacy Policy for GymSync" effectiveDate={EFFECTIVE_DATE} lastUpdated={LAST_UPDATED}>
       <p>
         Yoshiharu Nishikawahara (&quot;we,&quot; &quot;our,&quot; or &quot;us&quot;) built GymSync as a
         freemium fitness coaching app. This Privacy Policy explains how we collect, use, and
@@ -35,7 +36,7 @@ export default function PrivacyPolicyPage() {
           <strong>Profile information:</strong> Your display name, age, sex, and body statistics
           you choose to enter (used only to calculate your coaching math — calorie needs,
           recovery, and training load), and, if you choose to set one, a profile picture selected
-          from your photo library or taken with your camera.
+          from your photo library.
         </li>
         <li>
           <strong>Workout data:</strong> The workout plans, exercises, sets, reps, weights, and
@@ -57,19 +58,34 @@ export default function PrivacyPolicyPage() {
           <strong>Device information:</strong> We may collect basic device and app version
           information for compatibility and debugging purposes.
         </li>
+        <li>
+          <strong>Crash reports:</strong> When the app or our server hits an unexpected error, we
+          send a diagnostic report to Sentry (see Section 4). A report contains the error, where in
+          the code it happened, your device and app version, and your account ID — so we can tell
+          one user hitting a bug ten times from ten users hitting it once. It does not contain your
+          messages to the coach, your voice audio, your password, or your login tokens.
+        </li>
       </ul>
       <p>
         GymSync does not use third-party analytics or advertising SDKs, does not use cookies or
-        cross-device ad tracking, and does not show ads. If this changes in a future version, this
+        cross-device ad tracking, and does not show ads. Crash reporting is not analytics: it
+        records failures, not what you do in the app. If this changes in a future version, this
         Policy will be updated first.
       </p>
 
       <h3>Information from Third Parties</h3>
       <p>
-        GymSync does not currently offer third-party or social sign-in, and has no public forums,
-        community feed, or user-to-user messaging — your workout data and coach conversations are
-        private to your account. If this changes, this Policy will be updated before the feature
-        ships.
+        GymSync offers <strong>Sign in with Apple</strong> and <strong>Sign in with Google</strong>.
+        If you use either, we receive the email address and name that provider chooses to share with
+        us — with Sign in with Apple, that may be a private relay address rather than your real one,
+        and that is entirely your choice at the point of sign-in. We never receive your Apple or
+        Google password. We do not import your contacts, friends, or any other data from those
+        accounts.
+      </p>
+      <p>
+        GymSync has no public forums, community feed, or user-to-user messaging — your workout data
+        and coach conversations are private to your account. If this changes, this Policy will be
+        updated before the feature ships.
       </p>
 
       <h2>2. How We Use Your Information</h2>
@@ -134,14 +150,34 @@ export default function PrivacyPolicyPage() {
             <td><a href="https://www.anthropic.com/legal/privacy">Anthropic Privacy Policy</a></td>
           </tr>
           <tr>
+            <td>Deepgram</td>
+            <td><strong>Receives your voice audio</strong> during a live voice coaching session and converts it to text, and converts your coach&apos;s text replies back into spoken audio</td>
+            <td><a href="https://deepgram.com/privacy">Deepgram Privacy Policy</a></td>
+          </tr>
+          <tr>
             <td>ElevenLabs</td>
-            <td>Converts your coach&apos;s text replies into spoken voice audio during live voice coaching</td>
+            <td>A backup voice provider, used only if Deepgram is unavailable when generating your coach&apos;s spoken replies</td>
             <td><a href="https://elevenlabs.io/privacy">ElevenLabs Privacy Policy</a></td>
           </tr>
           <tr>
-            <td>Apple (on-device/Apple Speech services)</td>
-            <td>Converts your speech to text during live voice coaching</td>
+            <td>Apple (on-device Speech framework)</td>
+            <td>Converts speech to text when you dictate a chat message using the microphone button. This runs on your device — dictated audio is not sent to us or to Deepgram</td>
             <td><a href="https://www.apple.com/legal/privacy/">Apple Privacy Policy</a></td>
+          </tr>
+          <tr>
+            <td>Sentry</td>
+            <td>Receives crash and error reports, as described in Section 1</td>
+            <td><a href="https://sentry.io/privacy/">Sentry Privacy Policy</a></td>
+          </tr>
+          <tr>
+            <td>Apple (Sign in with Apple)</td>
+            <td>Authenticates you if you choose to sign in with your Apple account</td>
+            <td><a href="https://www.apple.com/legal/privacy/">Apple Privacy Policy</a></td>
+          </tr>
+          <tr>
+            <td>Google (Sign in with Google)</td>
+            <td>Authenticates you if you choose to sign in with your Google account</td>
+            <td><a href="https://policies.google.com/privacy">Google Privacy Policy</a></td>
           </tr>
           <tr>
             <td>Apple App Store</td>
@@ -166,7 +202,7 @@ export default function PrivacyPolicyPage() {
 
       <h2>5. International Data Transfers</h2>
       <p>
-        GymSync&apos;s service providers (Supabase, Anthropic, and ElevenLabs) operate servers in
+        GymSync&apos;s service providers (Supabase, Anthropic, Deepgram, ElevenLabs, and Sentry) operate servers in
         the United States. If you are located outside the United States, using GymSync means your
         personal information — including workout and coaching data — is transferred to and
         processed in the United States, which may have different data protection laws than your
@@ -236,7 +272,7 @@ export default function PrivacyPolicyPage() {
         </li>
         <li>
           <strong>Cross-border transfer:</strong> Because we use overseas service providers
-          (Supabase, Anthropic, and ElevenLabs, all of which process data on servers located
+          (Supabase, Anthropic, Deepgram, ElevenLabs, and Sentry, all of which process data on servers located
           outside Japan), your personal information is transferred to and processed in other
           countries, including the United States. By using GymSync, you consent to this transfer.
         </li>

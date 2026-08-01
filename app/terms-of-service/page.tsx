@@ -7,11 +7,12 @@ export const metadata: Metadata = {
   description: 'The terms that govern your use of GymSync.',
 };
 
-const EFFECTIVE_DATE = 'July 30, 2026';
+const EFFECTIVE_DATE = 'August 1, 2026';
+const LAST_UPDATED = 'August 1, 2026';
 
 export default function TermsOfServicePage() {
   return (
-    <LegalPage title="Terms of Service for GymSync" effectiveDate={EFFECTIVE_DATE}>
+    <LegalPage title="Terms of Service for GymSync" effectiveDate={EFFECTIVE_DATE} lastUpdated={LAST_UPDATED}>
       <p>
         Please read these Terms of Service (&quot;Terms&quot;) carefully before using GymSync
         (&quot;the App&quot;), operated by Yoshiharu Nishikawahara (&quot;we,&quot; &quot;our,&quot;
@@ -35,7 +36,7 @@ export default function TermsOfServicePage() {
       <p>
         We may modify, update, or discontinue any feature or functionality of GymSync at any time,
         without liability, including changes required by our service providers (Apple, Supabase,
-        Anthropic, or ElevenLabs).
+        Anthropic, Deepgram, or ElevenLabs).
       </p>
       <p>
         We may update these Terms from time to time. When we make material changes, we will update
@@ -210,7 +211,8 @@ export default function TermsOfServicePage() {
 
       <h2>10. Third-Party Services</h2>
       <p>
-        GymSync relies on third-party services (Supabase, Anthropic, ElevenLabs, and Apple) to
+        GymSync relies on third-party services (Supabase, Anthropic, Deepgram, ElevenLabs, Sentry, Apple,
+        and Google) to
         operate, as described in our <Link href="/privacy-policy">Privacy Policy</Link>. We are
         not responsible for the accuracy, availability, or performance of these third-party
         services, and your use of them (to the extent you interact with them directly) is subject
