@@ -1,25 +1,15 @@
 import type { Metadata, Viewport } from 'next';
-import { Geist, Instrument_Serif } from 'next/font/google';
+import { Inter } from 'next/font/google';
 import './globals.css';
 
-const sans = Geist({
+/**
+ * One family, like the app: gymsync-app renders everything in Inter 400–800
+ * (src/theme/typography.ts). Display is a weight-and-tracking role, not a
+ * second face — so a single variable load covers the whole site.
+ */
+const inter = Inter({
   subsets: ['latin'],
-  variable: '--font-sans',
-  display: 'swap',
-});
-
-const display = Geist({
-  subsets: ['latin'],
-  variable: '--font-display',
-  weight: ['500', '600', '700'],
-  display: 'swap',
-});
-
-const serif = Instrument_Serif({
-  subsets: ['latin'],
-  variable: '--font-serif',
-  weight: '400',
-  style: ['normal', 'italic'],
+  variable: '--font-inter',
   display: 'swap',
 });
 
@@ -27,21 +17,22 @@ const SITE_URL = 'https://gymsyncapp.me';
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: 'GymSync — Your AI gym partner. Right in your ear.',
+  title: 'GymSync — Your coach talks you through every set',
   description:
-    'Voice-first AI coach that runs your workout, logs every set, and adapts your plan in real time. Join the waitlist — first 500 get Pro free for life.',
+    'A voice-first AI strength coach for iOS. Put in an earbud: it calls your sets, hears what you lifted, logs it hands-free, and adapts your plan as you train.',
   openGraph: {
-    title: 'GymSync — Your AI gym partner',
+    title: 'GymSync — Put in an earbud. Your coach takes it from there.',
     description:
-      'Voice-first coach. Auto-logged sets. Plans that adapt. Join the waitlist.',
+      'Voice coaching in your ear, hands-free set logging, and a plan built from your own numbers. iOS.',
     url: SITE_URL,
     siteName: 'GymSync',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'GymSync — Your AI gym partner',
-    description: 'First 500 founders get Pro free for life. Join the waitlist.',
+    title: 'GymSync — Your coach talks you through every set',
+    description:
+      'Voice coaching in your ear, hands-free set logging, and a plan built from your own numbers. iOS.',
   },
   icons: {
     icon: '/app-icon.png',
@@ -51,14 +42,15 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: '#06101F',
+  /* The page opens on the dark hero film — match the browser chrome to it. */
+  themeColor: '#0b2447',
   width: 'device-width',
   initialScale: 1,
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${sans.variable} ${display.variable} ${serif.variable}`}>
+    <html lang="en" className={inter.variable}>
       <body>{children}</body>
     </html>
   );

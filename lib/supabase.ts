@@ -1,5 +1,11 @@
 import { createClient as createSupabaseClient, SupabaseClient } from '@supabase/supabase-js';
 
+/**
+ * Anon-key client for the one thing this site writes: waitlist signups.
+ * The anon key is public by design; safety lives in Supabase RLS — the
+ * `waitlist` table allows anon INSERT only (no select policy, so addresses
+ * can never be read back through this key).
+ */
 let cached: SupabaseClient | null = null;
 
 export function createClient(): SupabaseClient {
@@ -13,23 +19,4 @@ export function createClient(): SupabaseClient {
     auth: { persistSession: false, autoRefreshToken: false },
   });
   return cached;
-}
-
-export const FOUNDER_CAP = Number(process.env.NEXT_PUBLIC_FOUNDER_CAP ?? 500);
-
-export async function getWaitlistCount(): Promise<number> {
-  try {
-    const supabase = createClient();
-    const { data, error } = await supabase.rpc('get_waitlist_count');
-    if (error) {
-      // Fallback to a head count if RPC isn't installed yet
-      const { count } = await supabase
-        .from('waitlist')
-        .select('*', { count: 'exact', head: true });
-      return count ?? 0;
-    }
-    return Number(data ?? 0);
-  } catch {
-    return 0;
-  }
 }

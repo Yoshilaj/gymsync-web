@@ -1,26 +1,90 @@
 @import "tailwindcss";
 
+/*
+ * GymSync web tokens — the APP's design system, verbatim.
+ *
+ * Values are lifted from gymsync-app/src/theme/{palette,colors}.ts: navy-tinted
+ * neutrals (grays never look dirty on the tinted ground), brand blue reserved
+ * for the coach/graphics, orange EXCLUSIVELY for the user's live voice, green
+ * for a set that landed. If a value needs changing, change it in the app first
+ * and mirror it here — the site follows the app, not the other way round.
+ *
+ * Seven token names are load-bearing for the legal pages and must never be
+ * renamed (values may move): --color-bg, --color-ink, --color-ink-soft,
+ * --color-ink-dim, --color-accent-deep, --color-line, --font-display.
+ */
 @theme {
-  --color-bg: #F4F8FF;
-  --color-bg-tint: #DCE9FB;
-  --color-ink: #0B1C36;
-  --color-ink-soft: rgba(11, 28, 54, 0.68);
-  --color-ink-dim: rgba(11, 28, 54, 0.45);
-  --color-line: rgba(11, 28, 54, 0.10);
-  --color-glass: rgba(255, 255, 255, 0.6);
-  --color-accent: #2E90EA;
-  --color-accent-deep: #1B6FC4;
-  --color-success: #5BE6A6;
-  --color-danger: #C13B3B;
+  /* ── Surfaces (app: bg / bgSubtle / card / sunken) ── */
+  --color-bg: #eef3fa;
+  --color-bg-subtle: #f7fafd;
+  --color-card: #ffffff;
+  --color-sunken: #e7eef7;
 
-  --font-display: var(--font-display), ui-sans-serif, system-ui, sans-serif;
-  --font-sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
-  --font-serif: var(--font-serif), ui-serif, Georgia, serif;
+  /* ── Text (app: textPrimary / textSecondary / textTertiary) ── */
+  --color-ink: #0b2447;
+  --color-ink-soft: #4a617f;
+  --color-ink-dim: #7a8ca5;
+
+  /* On the navyDeep band and the hero video */
+  --color-ink-inverse: #f2f6fc;
+  --color-ink-inverse-soft: #a9b8ce;
+
+  /* ── Accent — blue is the coach. Graphics use accent; TEXT uses accent-text
+        (app rule: raw accent never colors text). ── */
+  --color-accent: #2e90ea;
+  --color-accent-text: #1d77ce;
+  --color-accent-deep: #1d77ce; /* legacy name (legal pages) */
+  --color-accent-soft: #deedfc;
+  --color-accent-faint: #f0f7fe;
+
+  /* ── Live — EXCLUSIVELY the user's voice / mic / hot (app rule) ── */
+  --color-live: #ff7a45;
+  --color-live-soft: #ffede4;
+
+  /* ── Status ── */
+  --color-success: #21a566;
+  --color-success-text: #178453;
+  --color-success-soft: #dcf5e9;
+  --color-danger: #e04545;
+
+  /* ── Lines (app: border) ── */
+  --color-line: #dce6f3;
+
+  /* ── Type — Inter, the app's family. Same var for sans and display; the
+        display role is weight + tracking, not a different face. ── */
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  /* ── Radius — the app's scale (spacing.ts) ── */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px; /* default card */
+  --radius-xl: 24px; /* hero cards */
+  --radius-2xl: 32px; /* sheets, the tab-bar pill */
+
+  /* ── Shadows — navy-tinted; white cards carry shadow, never a border ── */
+  --shadow-card: 0 8px 24px -8px rgba(11, 36, 71, 0.14),
+    0 2px 8px -2px rgba(11, 36, 71, 0.08);
+  --shadow-card-lg: 0 20px 48px -16px rgba(11, 36, 71, 0.22),
+    0 4px 12px -4px rgba(11, 36, 71, 0.1);
+  --shadow-glass: 0 12px 32px -12px rgba(11, 36, 71, 0.28);
 }
 
-* { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+}
 
-html, body {
+html {
+  scroll-behavior: smooth;
+}
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+html,
+body {
   background: var(--color-bg);
   color: var(--color-ink);
   font-family: var(--font-sans);
@@ -30,139 +94,109 @@ html, body {
 
 body {
   min-height: 100svh;
-  overflow-x: hidden;
+  /* clip, not hidden: hidden makes body a scroll container and kills
+     position:sticky for every descendant — it cost us the hero pin once. */
+  overflow-x: clip;
 }
 
-::selection { background: var(--color-accent); color: var(--color-bg); }
-
-/* Subtle film grain to kill banding on the dark gradient */
-.grain::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0.06;
-  mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.6 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+::selection {
+  background: var(--color-accent);
+  color: #ffffff;
 }
+
+/* ── App-language utilities ─────────────────────────────────────────────── */
+
+/* The app's `label` text variant, verbatim: eyebrows, rails, timestamps. */
+.eyebrow {
+  font-size: 11px;
+  line-height: 14px;
+  font-weight: 600;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+}
+
+/* Numbers the reader compares: prices, reps, stats (app `stat` variants). */
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Primary CTA — the app's Button gradient, as a pill. */
+.btn-brand {
+  background-image: linear-gradient(180deg, #2e90ea, #1a6bc0);
+  color: #ffffff;
+  border-radius: 999px;
+  box-shadow: 0 10px 24px -10px rgba(46, 144, 234, 0.55);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.btn-brand:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 28px -10px rgba(46, 144, 234, 0.6);
+}
+.btn-brand:active {
+  transform: translateY(0);
+}
+
+/* The navyDeep band — the app's Milestone/RestDay dark-card language. */
+.band-navy {
+  background-image: linear-gradient(180deg, #22405f, #0b2447);
+  color: var(--color-ink-inverse);
+}
+
+/* ── Keyframes ──────────────────────────────────────────────────────────── */
 
 @keyframes pulseDot {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.5; transform: scale(0.85); }
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(0.85);
+  }
 }
-.pulse-dot { animation: pulseDot 1.6s ease-in-out infinite; }
-
-@keyframes floatSoft {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-6px); }
-}
-.float-soft { animation: floatSoft 6s ease-in-out infinite; }
-
-@keyframes riseIn {
-  from { opacity: 0; transform: translateY(14px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-.rise-in { animation: riseIn 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
-
-/* Interactive cursor glow — driven by --mx / --my CSS vars set on <html> */
-.cursor-glow {
-  background: radial-gradient(
-    700px circle at var(--mx, 50%) var(--my, 30%),
-    rgba(46, 144, 234, 0.42),
-    rgba(108, 182, 255, 0.22) 30%,
-    transparent 65%
-  );
+.pulse-dot {
+  animation: pulseDot 1.6s ease-in-out infinite;
 }
 
-/* Soft milky mesh ambient layer */
-.milky-mesh {
-  background:
-    radial-gradient(ellipse 60% 50% at 12% 10%, var(--color-bg-tint), transparent 60%),
-    radial-gradient(ellipse 55% 45% at 88% 95%, var(--color-bg-tint), transparent 60%);
+/* Speaking indicator — three equalizer bars inside the coach chip. */
+@keyframes eq {
+  0%,
+  100% {
+    transform: scaleY(0.35);
+  }
+  50% {
+    transform: scaleY(1);
+  }
+}
+.eq-bar {
+  animation: eq 0.9s ease-in-out infinite;
+  transform-origin: center;
 }
 
-/* Silky woven texture — multi-layer sheen + cross-fibered noise + iridescence */
-.silk-sheen {
-  background-image:
-    /* primary diagonal sheen band */
-    linear-gradient(118deg,
-      rgba(255,255,255,0.0) 0%,
-      rgba(255,255,255,0.55) 18%,
-      rgba(220,233,251,0.0) 38%,
-      rgba(255,255,255,0.45) 62%,
-      rgba(220,233,251,0.0) 82%,
-      rgba(255,255,255,0.35) 100%),
-    /* counter-angle sheen band */
-    linear-gradient(62deg,
-      rgba(160,200,255,0.0) 0%,
-      rgba(160,200,255,0.22) 30%,
-      rgba(255,255,255,0.0) 55%,
-      rgba(160,200,255,0.18) 80%,
-      rgba(160,200,255,0.0) 100%);
-  mix-blend-mode: soft-light;
-  opacity: 0.95;
+/* Exercise-library marquee — translate half the doubled track. */
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
 }
-.silk-fibers {
-  background-image:
-    /* warp threads */
-    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='320' height='320'><filter id='w'><feTurbulence type='fractalNoise' baseFrequency='3.2 0.04' numOctaves='2' stitchTiles='stitch' seed='3'/><feColorMatrix values='0 0 0 0 0.42  0 0 0 0 0.56  0 0 0 0 0.92  0 0 0 0.32 0'/></filter><rect width='100%25' height='100%25' filter='url(%23w)'/></svg>"),
-    /* weft threads */
-    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='320' height='320'><filter id='f'><feTurbulence type='fractalNoise' baseFrequency='0.04 3.2' numOctaves='2' stitchTiles='stitch' seed='9'/><feColorMatrix values='0 0 0 0 0.42  0 0 0 0 0.56  0 0 0 0 0.92  0 0 0 0.28 0'/></filter><rect width='100%25' height='100%25' filter='url(%23f)'/></svg>"),
-    /* fine grain to break up banding */
-    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='1.4' numOctaves='2' stitchTiles='stitch' seed='1'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.18 0'/></filter><rect width='100%25' height='100%25' filter='url(%23g)'/></svg>");
-  background-size: 320px 320px, 320px 320px, 180px 180px;
-  mix-blend-mode: soft-light;
-  opacity: 0.9;
+.marquee-track {
+  animation: marquee 60s linear infinite;
 }
-.silk-iridescence {
-  background-image: conic-gradient(from 210deg at 50% 40%,
-    rgba(255,255,255,0.0)   0deg,
-    rgba(180,210,255,0.18) 60deg,
-    rgba(255,255,255,0.0) 120deg,
-    rgba(210,225,255,0.16) 200deg,
-    rgba(255,255,255,0.0) 280deg,
-    rgba(190,215,255,0.18) 340deg,
-    rgba(255,255,255,0.0) 360deg);
-  mix-blend-mode: overlay;
-  opacity: 0.7;
+.marquee-track:hover {
+  animation-play-state: paused;
 }
-
-/* Ripple wavefront — a thin RING that travels outward, dissipates at the edge */
-.ripple {
-  position: absolute;
-  width: var(--rsize, 600px);
-  height: var(--rsize, 600px);
-  margin-left: calc(var(--rsize, 600px) / -2);
-  margin-top: calc(var(--rsize, 600px) / -2);
-  border-radius: 9999px;
-  pointer-events: none;
-  /* Hollow ring: bright wavefront band sits between 44%–56% of radius. As the
-     element scales 0→1, this band sweeps outward exactly to the edges. */
-  background: radial-gradient(circle,
-    transparent 0%,
-    transparent 38%,
-    rgba(255,255,255,0.55) 46%,
-    rgba(160,205,255,0.75) 50%,
-    rgba(108,182,255,0.45) 54%,
-    transparent 62%);
-  mix-blend-mode: screen;
-  transform: scale(0);
-  opacity: 0;
-  animation: rippleOut 1600ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
-  will-change: transform, opacity;
-}
-@keyframes rippleOut {
-  0%   { transform: scale(0);    opacity: 0; }
-  8%   {                          opacity: 0.95; }
-  85%  {                          opacity: 0.55; }
-  100% { transform: scale(1.02); opacity: 0; }
-}
-
-
-/* Italicized accent on display fonts pairs with serif */
-.accent-italic {
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-weight: 400;
-  letter-spacing: -0.01em;
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none;
+  }
+  .pulse-dot {
+    animation: none;
+  }
+  .eq-bar {
+    animation: none;
+  }
 }

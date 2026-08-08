@@ -1,60 +1,64 @@
-# GymHomie Waitlist Site
+# gymsync-web
 
-High-converting single-page waitlist for GymHomie. Built with Next.js 15 App Router + Tailwind v4 + Supabase.
+The GymSync marketing site — gymsyncapp.me. Next.js 15 App Router, React 19,
+Tailwind CSS v4, Supabase (waitlist), Framer Motion.
 
-## Setup
+The design system mirrors the app: tokens in `app/globals.css` are lifted
+verbatim from `gymsync-app/src/theme/` (navy-tinted neutrals, brand blue for
+the coach, orange exclusively for the user's live voice). The site follows the
+app — change tokens there first.
 
-1. **Install deps**
-   ```bash
-   npm install
-   ```
+## Pages
 
-2. **Supabase: create the table** (in Supabase SQL editor)
-   ```sql
-   create table public.waitlist (
-     id uuid primary key default gen_random_uuid(),
-     email text not null unique,
-     referrer text,
-     user_agent text,
-     created_at timestamptz not null default now()
-   );
+- `/` — landing: scroll-scrubbed hero film (`public/hero-scrub.mp4`), audio
+  demo with real product voices (`public/audio/`), coaches, pricing (computed
+  from `lib/catalog.ts` cents integers — never hand-type a price), FAQ.
+- `/support` — subscription/cancellation/deletion help. **No reply-time
+  promises here** until the support mailbox is verified.
+- `/privacy-policy`, `/terms-of-service` — **Apple points at these URLs**
+  (App Store Connect privacy URL + description links). They must never 404.
 
-   create index waitlist_created_at_idx on public.waitlist (created_at desc);
+## Launch-day switch
 
-   alter table public.waitlist enable row level security;
+`lib/flags.ts` → `APP_STORE_URL`. While `null`, every CTA is the waitlist
+form; set the URL when Apple approves and every CTA becomes a download button.
 
-   create policy "anon insert" on public.waitlist
-     for insert to anon with check (true);
+## Env
 
-   create or replace function public.get_waitlist_count()
-   returns int language sql security definer as $$
-     select count(*)::int from public.waitlist;
-   $$;
-   grant execute on function public.get_waitlist_count to anon;
-   ```
+- `NEXT_PUBLIC_SUPABASE_URL`
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY`
 
-3. **Env vars** — copy `.env.local.example` → `.env.local` and fill:
-   ```
-   NEXT_PUBLIC_SUPABASE_URL=...
-   NEXT_PUBLIC_SUPABASE_ANON_KEY=...
-   NEXT_PUBLIC_FOUNDER_CAP=500
-   ```
+## Supabase schema (waitlist)
 
-4. **Dev server**
-   ```bash
-   npm run dev
-   ```
-   Open http://localhost:3000.
+```sql
+create table public.waitlist (
+  id uuid primary key default gen_random_uuid(),
+  email text not null unique,
+  referrer text,
+  user_agent text,
+  created_at timestamptz not null default now()
+);
 
-## Deploy
+create index waitlist_created_at_idx on public.waitlist (created_at desc);
 
-Push to GitHub → import to Vercel → set the 3 env vars in Vercel project settings → deploy.
+alter table public.waitlist enable row level security;
 
-## Files
+create policy "anon insert" on public.waitlist
+  for insert to anon with check (true);
 
-- `app/page.tsx` — composes the full landing page
-- `app/actions.ts` — `joinWaitlist` server action
-- `app/layout.tsx` — metadata, OG, fonts
-- `app/opengraph-image.tsx` — auto-generated OG image
-- `lib/supabase.ts` — Supabase client + `getWaitlistCount`
-- `components/` — Hero, OfferBanner, HowItWorks, FeatureGrid, SocialProof, FAQ, FinalCTA, WaitlistForm, SpotsLeftCounter, StickyOfferBar, PhoneMockup, Footer
+create or replace function public.get_waitlist_count()
+returns int language sql security definer as $$
+  select count(*)::int from public.waitlist;
+$$;
+grant execute on function public.get_waitlist_count to anon;
+```
+
+## Dev
+
+```bash
+npm run dev    # http://localhost:3000
+npm run build
+```
+
+`/wireframe` is the parked greybox skeleton from the redesign; delete it once
+the live page is signed off.

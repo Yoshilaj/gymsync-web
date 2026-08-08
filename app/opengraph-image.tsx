@@ -3,7 +3,7 @@ import { ImageResponse } from 'next/og';
 export const runtime = 'edge';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
-export const alt = 'GymSync — Your AI gym partner. Right in your ear.';
+export const alt = 'GymSync — Put in an earbud. Your coach takes it from there.';
 
 export default function OG() {
   return new ImageResponse(
@@ -16,7 +16,7 @@ export default function OG() {
           flexDirection: 'column',
           padding: '80px',
           background:
-            'radial-gradient(circle at 80% 0%, #2E90EA 0%, transparent 50%), radial-gradient(circle at 0% 100%, #1B6FBF 0%, transparent 50%), #0B2447',
+            'radial-gradient(circle at 80% 0%, #2E90EA 0%, transparent 50%), radial-gradient(circle at 0% 100%, #1A6BC0 0%, transparent 50%), #0B2447',
           color: 'white',
           fontFamily: 'sans-serif',
         }}
@@ -63,15 +63,15 @@ export default function OG() {
               alignSelf: 'flex-start',
               padding: '8px 16px',
               borderRadius: 999,
-              background: 'rgba(228, 166, 47, 0.18)',
-              color: '#FFC857',
+              background: 'rgba(46, 144, 234, 0.18)',
+              color: '#8AC4F4',
               fontSize: 22,
               fontWeight: 700,
               letterSpacing: 2,
               textTransform: 'uppercase',
             }}
           >
-            ★ First 500 get Pro free for life
+            Voice-first strength coach · iOS
           </div>
           <div
             style={{
@@ -79,13 +79,13 @@ export default function OG() {
               fontWeight: 800,
               lineHeight: 1.05,
               letterSpacing: -2,
-              maxWidth: 1000,
+              maxWidth: 1050,
             }}
           >
-            Your AI gym partner. Right in your ear.
+            Put in an earbud. Your coach takes it from there.
           </div>
-          <div style={{ fontSize: 32, opacity: 0.75, maxWidth: 900 }}>
-            Voice-first coach. Auto-logged sets. Plans that adapt to you.
+          <div style={{ fontSize: 32, opacity: 0.75, maxWidth: 950 }}>
+            It calls your sets, hears what you lifted, and logs it hands-free.
           </div>
         </div>
       </div>
